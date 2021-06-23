@@ -26,9 +26,13 @@ If you use the same SSL certificate on your AD as on Zimbra there is a good chan
 * /opt/zimbra/common/bin/keytool -import -alias win2012 -keystore /opt/zimbra/common/etc/java/cacerts -trustcacerts -file your-exported-cert.cer
 * default password: changeit
 
-You can get any ldaps ssl certificate by using OpenSSL: openssl s_client -connect servername:port, copy paste the cert from -----BEGIN CERTIFICATE----- to -----END CERTIFICATE----- and put it in a file on your server. Then import using above commands.
+To extract the SSL cert of the AD use:
 
-Please note some users reported that on recent Zimbra versions you must use a DNS domain name to connect to the AD server, using IP addresses no longer works and is not secure SSL/TLS.
+```
+echo -n | openssl s_client -connect DC_HOSTNAME:3269 -servername DC_HOSTNAME | openssl x509 > your-exported-cert.cer
+```
+
+Please note that on recent Zimbra versions and especially with AD/Samba4, you must use a DNS domain name to connect to the AD server, using IP addresses no longer works and is not secure SSL/TLS.
 
 ## Installation via the cli
 
